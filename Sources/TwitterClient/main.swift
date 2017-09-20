@@ -16,6 +16,12 @@ let main = Group {
         let client = Client()
         client.logout()
     }
+    
+    $0.command("timeline", Option("count", 30, description: "取得するツイート数"), { count in
+        let client = Client()
+        client.timeline(count: count)
+    })
+    
 }
 
 main.run()

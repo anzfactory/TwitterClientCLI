@@ -15,7 +15,9 @@ public final class Client {
     )
     
     public init() { }
-    
+}
+
+extension Client {
     public func auth() {
         let request = RequestTokenType(oauth: self.oauth)
         Session.send(request) { [weak self] result in
@@ -61,7 +63,31 @@ public final class Client {
         UserDefaults.standard.removeObject(forKey: "oauthtokensecret")
     }
     
-    private func getAccessToken(pinCode: String) {
+    public func timeline(count: Int = 30) {
+        var count = count
+        if count <= 0 {
+            print("invalid count...")
+            return
+        } else if count > 200 {
+            count = 200
+        }
+        
+        let request = TimelineType(oauth: self.oauth, count: count)
+        Session.send(request) { [weak self] result in
+            switch result {
+            case .success(let tweets):
+                self?.outputTweets(tweets: tweets.list)
+            case.failure(let error):
+                print(error)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
+}
+
+extension Client {
+    fileprivate func getAccessToken(pinCode: String) {
         let request = AccessTokenType(oauth: self.oauth, pinCode: pinCode)
         Session.send(request) { [weak self] result in
             switch result {
@@ -76,7 +102,10 @@ public final class Client {
             exit(0)
         }
     }
+    
+    fileprivate func outputTweets(tweets: [Tweet]) {
+        for tweet in tweets {
+            print("@\(tweet.user.screenName) : \(tweet.id)\n\(tweet.text)\n----------")
+        }
+    }
 }
-
-
-
