@@ -22,6 +22,10 @@ let main = Group {
         client.timeline(count: count)
     })
     
+    $0.command("retweet") { (tweetId: Int) in
+        let client = Client()
+        client.retweet(tweetId)
+    }
 }
 
 main.run()

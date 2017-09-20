@@ -39,6 +39,11 @@ extension Client {
         dispatchMain()
     }
     
+    public func logout() {
+        UserDefaults.standard.removeObject(forKey: "oauthtoken")
+        UserDefaults.standard.removeObject(forKey: "oauthtokensecret")
+    }
+    
     public func tweet(_ message: String?) {
         guard let message = message else {
             print("message is empty...")
@@ -58,9 +63,18 @@ extension Client {
         dispatchMain()
     }
     
-    public func logout() {
-        UserDefaults.standard.removeObject(forKey: "oauthtoken")
-        UserDefaults.standard.removeObject(forKey: "oauthtokensecret")
+    public func retweet(_ tweetId: Int) {
+        let request = RetweetType(oauth: self.oauth, tweetId: tweetId)
+        Session.send(request) {
+            switch $0 {
+            case .success(let tweet):
+                print("retweeted: \(tweet.id)")
+            case .failure(let error):
+                print(error)
+            }
+            exit(0)
+        }
+        dispatchMain()
     }
     
     public func timeline(count: Int = 30) {
