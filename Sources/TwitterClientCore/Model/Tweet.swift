@@ -27,6 +27,6 @@ struct Tweet: Outputable {
     }
     
     func output() -> String {
-        return "@\(self.user.screenName) : \(self.id)\n\(self.text)"
+        return "@\(self.user.screenName)（\(self.user.name)）\n\(self.text)\nid:\(self.id)"
     }
 }
