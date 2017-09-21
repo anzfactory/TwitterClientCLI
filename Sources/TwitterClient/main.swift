@@ -65,6 +65,13 @@ let main = Group {
         let client = Client()
         client.follow(userId: id, screenName: name)
     })
+    
+    $0.command("unfollow",
+               Option("id", 0, description: "フォローするユーザID"),
+               Option("name", "", description: "フォローするユーザ名"), { (id, name) in
+                let client = Client()
+                client.unfollow(userId: id, screenName: name)
+    })
 
 }
 

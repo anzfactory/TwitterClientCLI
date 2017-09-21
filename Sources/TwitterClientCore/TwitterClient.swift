@@ -204,7 +204,21 @@ extension Client {
         Session.send(request) {
             switch $0 {
             case .success(let user):
-                print("follow: \(user.screenName)（\(user.id)）")
+                print("follow: @\(user.screenName)（\(user.id)）")
+            case .failure(let error):
+                print(error)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
+    
+    public func unfollow(userId: Int, screenName: String) {
+        let request = UnFollowType(oauth: self.oauth, userId: userId, screenName: screenName)
+        Session.send(request) {
+            switch $0 {
+            case .success(let user):
+                print("unfollow: @\(user.screenName)（\(user.id)）")
             case .failure(let error):
                 print(error)
             }
