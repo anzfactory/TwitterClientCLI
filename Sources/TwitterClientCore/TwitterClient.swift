@@ -4,6 +4,7 @@ import Dispatch
 
 import APIKit
 import Swiftline
+import Rainbow
 
 public final class Client {
     
@@ -46,7 +47,7 @@ extension Client {
     
     public func tweet(_ message: String?) {
         guard let message = message else {
-            print("message is empty...")
+            print("message is empty...".red)
             return
         }
         
@@ -54,7 +55,7 @@ extension Client {
         Session.send(request) {
             switch $0 {
             case .success(let tweet):
-                print("done: \(tweet.id)")
+                print("done: \(tweet.id)".blue)
             case .failure(let error):
                 print(error)
             }
@@ -68,7 +69,7 @@ extension Client {
         Session.send(request) {
             switch $0 {
             case .success(let tweet):
-                print("retweeted: \(tweet.id)")
+                print("retweeted: \(tweet.id)".blue)
             case .failure(let error):
                 print(error)
             }
@@ -82,7 +83,7 @@ extension Client {
         Session.send(request) {
             switch $0 {
             case .success(let tweet):
-                print("unretweeted: \(tweet.id)")
+                print("unretweeted: \(tweet.id)".blue)
             case .failure(let error):
                 print(error)
             }
@@ -110,7 +111,7 @@ extension Client {
         Session.send(request) {
             switch $0 {
             case .success(let tweet):
-                print("favorited: \(tweet.id)")
+                print("favorited: \(tweet.id)".blue)
             case .failure(let error):
                 print(error)
             }
@@ -124,7 +125,7 @@ extension Client {
         Session.send(request) {
             switch $0 {
             case .success(let tweet):
-                print("unfavorited: \(tweet.id)")
+                print("unfavorited: \(tweet.id)".blue)
             case .failure(let error):
                 print(error)
             }
@@ -136,7 +137,7 @@ extension Client {
     public func timeline(count: Int = 30) {
         var count = count
         if count <= 0 {
-            print("invalid count...")
+            print("invalid count...".red)
             return
         } else if count > 200 {
             count = 200
@@ -158,7 +159,7 @@ extension Client {
     public func searchTweet(_ q: String, count: Int = 30) {
         var count = count
         if count <= 0 {
-            print("invalid count...")
+            print("invalid count...".red)
             return
         } else if count > 200 {
             count = 200
@@ -180,7 +181,7 @@ extension Client {
     public func searchUser(_ q: String, count: Int = 30) {
         var count = count
         if count <= 0 {
-            print("invalid count...")
+            print("invalid count...".red)
             return
         } else if count > 200 {
             count = 200
@@ -204,7 +205,7 @@ extension Client {
         Session.send(request) {
             switch $0 {
             case .success(let user):
-                print("follow: @\(user.screenName)（\(user.id)）")
+                print("follow: @\(user.screenName)（\(user.id)）".blue)
             case .failure(let error):
                 print(error)
             }
@@ -218,7 +219,7 @@ extension Client {
         Session.send(request) {
             switch $0 {
             case .success(let user):
-                print("unfollow: @\(user.screenName)（\(user.id)）")
+                print("unfollow: @\(user.screenName)（\(user.id)）".blue)
             case .failure(let error):
                 print(error)
             }
@@ -237,7 +238,7 @@ extension Client {
                 UserDefaults.standard.set(accessToken.oauthToken, forKey: "oauthtoken")
                 UserDefaults.standard.set(accessToken.oauthTokenSecret, forKey: "oauthtokensecret")
                 self?.oauth.update(by: accessToken)
-                print("Hello \(accessToken.userName)")
+                print("Hello \(accessToken.userName)".blue)
             case .failure(let error):
                 print(error)
             }
