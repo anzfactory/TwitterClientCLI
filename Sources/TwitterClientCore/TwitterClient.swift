@@ -91,6 +91,20 @@ extension Client {
         dispatchMain()
     }
     
+    public func favorites(count: Int = 30) {
+        let request = FavoritesType(oauth: self.oauth, count: count)
+        Session.send(request) { [weak self] result in
+            switch result {
+            case .success(let tweets):
+                self?.outputTweets(tweets: tweets.list)
+            case .failure(let error):
+                print(error)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
+    
     public func timeline(count: Int = 30) {
         var count = count
         if count <= 0 {

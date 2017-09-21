@@ -31,6 +31,11 @@ let main = Group {
         let client = Client()
         client.unretweet(tweetId)
     }
+    
+    $0.command("favolist", Option("count", 30, description: "取得するいいね済みツイート数"), { count in
+        let client = Client()
+        client.favorites(count: count)
+    })
 }
 
 main.run()
