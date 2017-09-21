@@ -96,7 +96,7 @@ extension Client {
         Session.send(request) { [weak self] result in
             switch result {
             case .success(let tweets):
-                self?.outputTweets(tweets: tweets.list)
+                self?.output(items: tweets.list)
             case .failure(let error):
                 print(error)
             }
@@ -146,7 +146,7 @@ extension Client {
         Session.send(request) { [weak self] result in
             switch result {
             case .success(let tweets):
-                self?.outputTweets(tweets: tweets.list)
+                self?.output(items: tweets.list)
             case.failure(let error):
                 print(error)
             }
@@ -168,7 +168,29 @@ extension Client {
         Session.send(request) { [weak self] result in
             switch result {
             case .success(let tweets):
-                self?.outputTweets(tweets: tweets.list)
+                self?.output(items: tweets.list)
+            case .failure(let error):
+                print(error)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
+    
+    public func searchUser(_ q: String, count: Int = 30) {
+        var count = count
+        if count <= 0 {
+            print("invalid count...")
+            return
+        } else if count > 200 {
+            count = 200
+        }
+        
+        let request = SearchUserType(oauth: self.oauth, q: q, count: count)
+        Session.send(request) { [weak self] result in
+            switch result {
+            case .success(let users):
+                self?.output(items: users.list)
             case .failure(let error):
                 print(error)
             }
@@ -195,9 +217,10 @@ extension Client {
         }
     }
     
-    fileprivate func outputTweets(tweets: [Tweet]) {
-        for tweet in tweets {
-            print("@\(tweet.user.screenName) : \(tweet.id)\n\(tweet.text)\n----------")
+    fileprivate func output(items: [Outputable]) {
+        for item in items {
+            print(item.output())
+            print("- - - - - - - - - -")
         }
     }
 }

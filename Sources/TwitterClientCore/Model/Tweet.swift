@@ -9,7 +9,7 @@ import Foundation
 
 import APIKit
 
-struct Tweet {
+struct Tweet: Outputable {
     let id: Int
     let text: String
     let user: User
@@ -24,5 +24,9 @@ struct Tweet {
         self.id = id
         self.text = text
         self.user = try User(userDictionary)
+    }
+    
+    func output() -> String {
+        return "@\(self.user.screenName) : \(self.id)\n\(self.text)"
     }
 }

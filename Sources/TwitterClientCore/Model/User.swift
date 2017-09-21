@@ -9,9 +9,12 @@ import Foundation
 
 import APIKit
 
-struct User {
+struct User: Outputable {
     let id: Int
     let screenName: String
+    let name: String
+    let description: String
+    let url: String
     
     init(_ object: Any) throws {
         guard let dictionary = object as? [String: Any],
@@ -21,5 +24,22 @@ struct User {
         }
         self.id = id
         self.screenName = screenName
+        self.name = dictionary["name"] as? String ?? ""
+        self.description = dictionary["description"] as? String ?? ""
+        self.url = dictionary["url"] as? String ?? ""
+    }
+    
+    func output() -> String {
+        var string = "\(self.id) - \(self.screenName)"
+        if !self.name.isEmpty {
+            string += " : \(self.name)"
+        }
+        if !self.description.isEmpty {
+            string += "\n\(self.description)"
+        }
+        if !self.url.isEmpty {
+            string += "\n\(self.url)"
+        }
+        return string
     }
 }
