@@ -46,6 +46,14 @@ let main = Group {
         let client = Client()
         client.unfavorite(tweetId)
     }
+    
+    $0.command("search", Option("q", "", description: "検索するキーワード"), { q in
+        let client = Client()
+        if !q.isEmpty {
+            client.searchTweet(q)
+        }
+        
+    })
 
 }
 

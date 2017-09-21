@@ -154,6 +154,28 @@ extension Client {
         }
         dispatchMain()
     }
+    
+    public func searchTweet(_ q: String, count: Int = 30) {
+        var count = count
+        if count <= 0 {
+            print("invalid count...")
+            return
+        } else if count > 200 {
+            count = 200
+        }
+        
+        let request = SearchTweetType(oauth: self.oauth, q: q, count: count)
+        Session.send(request) { [weak self] result in
+            switch result {
+            case .success(let tweets):
+                self?.outputTweets(tweets: tweets.list)
+            case .failure(let error):
+                print(error)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
 }
 
 extension Client {
