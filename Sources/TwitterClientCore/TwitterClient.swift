@@ -198,6 +198,20 @@ extension Client {
         }
         dispatchMain()
     }
+    
+    public func follow(userId: Int, screenName: String) {
+        let request = FollowType(oauth: self.oauth, userId: userId, screenName: screenName)
+        Session.send(request) {
+            switch $0 {
+            case .success(let user):
+                print("follow: \(user.screenName)（\(user.id)）")
+            case .failure(let error):
+                print(error)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
 }
 
 extension Client {
