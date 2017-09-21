@@ -105,6 +105,20 @@ extension Client {
         dispatchMain()
     }
     
+    public func favorite(_ tweetId: Int) {
+        let request = FavoriteType(oauth: self.oauth, tweetId: tweetId)
+        Session.send(request) {
+            switch $0 {
+            case .success(let tweet):
+                print("favorited: \(tweet.id)")
+            case .failure(let error):
+                print(error)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
+    
     public func timeline(count: Int = 30) {
         var count = count
         if count <= 0 {
