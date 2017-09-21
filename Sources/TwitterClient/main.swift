@@ -26,6 +26,11 @@ let main = Group {
         let client = Client()
         client.retweet(tweetId)
     }
+    
+    $0.command("unretweet") { (tweetId: Int) in
+        let client = Client()
+        client.unretweet(tweetId)
+    }
 }
 
 main.run()

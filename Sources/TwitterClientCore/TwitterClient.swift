@@ -77,6 +77,20 @@ extension Client {
         dispatchMain()
     }
     
+    public func unretweet(_ tweetId: Int) {
+        let request = UnRetweetType(oauth: self.oauth, tweetId: tweetId)
+        Session.send(request) {
+            switch $0 {
+            case .success(let tweet):
+                print("unretweeted: \(tweet.id)")
+            case .failure(let error):
+                print(error)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
+    
     public func timeline(count: Int = 30) {
         var count = count
         if count <= 0 {
