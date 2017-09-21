@@ -8,6 +8,7 @@
 import Foundation
 
 import APIKit
+import Rainbow
 
 struct Tweet: Outputable {
     let id: Int
@@ -27,6 +28,6 @@ struct Tweet: Outputable {
     }
     
     func output() -> String {
-        return "@\(self.user.screenName)（\(self.user.name)）\n\(self.text)\nid:\(self.id)"
+        return "@\(self.user.screenName)（\(self.user.name)）".bold.underline + "\n\(self.text)\n" + "id:\(self.id)".lightMagenta
     }
 }

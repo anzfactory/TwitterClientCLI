@@ -8,6 +8,7 @@
 import Foundation
 
 import APIKit
+import Rainbow
 
 struct User: Outputable {
     let id: Int
@@ -34,11 +35,12 @@ struct User: Outputable {
         if !self.name.isEmpty {
             string += " : \(self.name)"
         }
+        string = string.bold.underline
         if !self.description.isEmpty {
             string += "\n\(self.description)"
         }
         if !self.url.isEmpty {
-            string += "\n\(self.url)"
+            string += "\n\(self.url)".lightMagenta
         }
         return string
     }
