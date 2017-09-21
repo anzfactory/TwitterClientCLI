@@ -41,6 +41,11 @@ let main = Group {
         let client = Client()
         client.favorite(tweetId)
     }
+    
+    $0.command("unfavo") { (tweetId: Int) in
+        let client = Client()
+        client.unfavorite(tweetId)
+    }
 
 }
 

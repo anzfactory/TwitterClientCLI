@@ -119,6 +119,20 @@ extension Client {
         dispatchMain()
     }
     
+    public func unfavorite(_ tweetId: Int) {
+        let request = UnFavoriteType(oauth: self.oauth, tweetId: tweetId)
+        Session.send(request) {
+            switch $0 {
+            case .success(let tweet):
+                print("unfavorited: \(tweet.id)")
+            case .failure(let error):
+                print(error)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
+    
     public func timeline(count: Int = 30) {
         var count = count
         if count <= 0 {
