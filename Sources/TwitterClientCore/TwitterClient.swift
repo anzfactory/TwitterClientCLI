@@ -157,6 +157,28 @@ extension Client {
         dispatchMain()
     }
     
+    public func userTimeline(_ screenName: String, count: Int = 30, sinceId: Int = 0, maxId: Int = 0) {
+        var count = count
+        if count <= 0 {
+            print("invalid count...".red)
+            return
+        } else if count > 200 {
+            count = 200
+        }
+        
+        let request = UserTimelineType(oauth: self.oauth, screenName: screenName, count: count, sinceId: sinceId, maxId: maxId)
+        Session.send(request) { [weak self] result in
+            switch result {
+            case .success(let tweets):
+                self?.output(items: tweets.list)
+            case.failure(let error):
+                print(error.localizedDescription.red)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
+    
     public func searchTweet(_ q: String, count: Int = 30, sinceId: Int, maxId: Int) {
         var count = count
         if count <= 0 {

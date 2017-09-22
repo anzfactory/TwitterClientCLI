@@ -27,9 +27,15 @@ let main = Group {
         Option("count", 30, description: "取得するツイート数"),
         Option("since", 0, description: "以降のツイートID"),
         Option("max", 0, description: "以前のツイートID"),
-        { (count, since, max) in
+        Option("user", "", description: "タイムラインを取得したいユーザのスクリーンネーム"),
+        { (count, since, max, user) in
             let client = Client()
-            client.timeline(count: count, sinceId: since, maxId: max)
+            if user.isEmpty {
+                client.timeline(count: count, sinceId: since, maxId: max)
+            } else {
+                client.userTimeline(user, count: count, sinceId: since, maxId: max)
+            }
+            
         }
     )
     
