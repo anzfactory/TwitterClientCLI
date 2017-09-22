@@ -46,13 +46,13 @@ extension Client {
         print("アクセストークンをクリアしました\nアプリ連携の解除は忘れずに行って下さい".blue)
     }
     
-    public func tweet(_ message: String?) {
-        guard let message = message else {
+    public func tweet(_ message: String, replyId: Int) {
+        if message.isEmpty {
             print("message is empty...".red)
             return
         }
         
-        let request = TweetType(oauth: self.oauth, message: message)
+        let request = TweetType(oauth: self.oauth, message: message, replyId: replyId)
         Session.send(request) {
             switch $0 {
             case .success(let tweet):

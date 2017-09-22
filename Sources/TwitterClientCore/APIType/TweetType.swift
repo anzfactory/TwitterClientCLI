@@ -14,6 +14,7 @@ struct TweetType: TwitterAPIType {
     
     var oauth: TwitterOAuth
     var message: String
+    var replyId: Int?
     
     var method: HTTPMethod {
         return .post
@@ -24,7 +25,11 @@ struct TweetType: TwitterAPIType {
     }
     
     var parameters: Any? {
-        return ["status": self.message]
+        var params: [String: Any] = ["status": self.message]
+        if let replyId = self.replyId, replyId > 0 {
+            params["in_reply_to_status_id"] = replyId
+        }
+        return params
     }
     
     var bodyParameters: BodyParameters? {

@@ -7,10 +7,15 @@ let main = Group {
         client.auth()
     }
     
-    $0.command("tweet") { (message: String) in
-        let client = Client()
-        client.tweet(message)
-    }
+    $0.command(
+        "tweet",
+        Argument<String>("message", description: "ツイート文"),
+        Option("reply", 0, description: "返信するツイートID"),
+        { (message, reply) in
+            let client = Client()
+            client.tweet(message, replyId: reply)
+        }
+    )
     
     $0.command("logout") {
         let client = Client()
