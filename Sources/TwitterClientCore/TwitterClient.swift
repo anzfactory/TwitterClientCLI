@@ -250,7 +250,7 @@ extension Client {
     fileprivate func output(items: [Outputable]) {
         for item in items {
             print(item.output())
-            print("- - - - - - - - - -")
+            print("")
         }
     }
 }
