@@ -3,13 +3,13 @@ CLIのツイッタークライアント
 
 ## インストール
 
-[ここ]からTwitterClientCLIをダウンロード
+[ここ](https://github.com/anzfactory/TwitterClientCLI/releases/latest)から**twcli**をダウンロード
 あとは`/usr/locari/bin`などに置くなり、パスを通すなりでok
 
 ### 自分でビルドする場合
 
 * Swiftを動く環境をととのえる
-* [ここから]コードをダウンロードするか、Cloneするなりでコードゲット
+* [ここ](https://github.com/anzfactory/TwitterClientCLI/releases/latest)コードをダウンロードするか、Cloneするなりでコードゲット
 * `swift build` or `swift build -c release`
 * あとはお好きに
 
