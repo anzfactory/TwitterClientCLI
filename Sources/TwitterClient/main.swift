@@ -33,30 +33,30 @@ let main = Group {
         }
     )
     
-    $0.command("retweet") { (tweetId: Int) in
+    $0.command("retweet", Argument<Int>("tweetId", description: "リツイートするツイートID"), { (tweetId: Int) in
         let client = Client()
         client.retweet(tweetId)
-    }
+    })
     
-    $0.command("unretweet") { (tweetId: Int) in
+    $0.command("unretweet", Argument<Int>("tweetId", description: "リツイートを解除するツイートID"), { (tweetId: Int) in
         let client = Client()
         client.unretweet(tweetId)
-    }
+    })
     
     $0.command("favolist", Option("count", 30, description: "取得するいいね済みツイート数"), { count in
         let client = Client()
         client.favorites(count: count)
     })
     
-    $0.command("favo") { (tweetId: Int) in
+    $0.command("favo", Argument<Int>("tweetId", description: "いいねするツイートID"), { (tweetId: Int) in
         let client = Client()
         client.favorite(tweetId)
-    }
+    })
     
-    $0.command("unfavo") { (tweetId: Int) in
+    $0.command("unfavo", Argument<Int>("tweetId", description: "いいねを解除するツイートID"), { (tweetId: Int) in
         let client = Client()
         client.unfavorite(tweetId)
-    }
+    })
     
     $0.command(
         "search",
