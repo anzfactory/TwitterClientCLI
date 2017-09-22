@@ -13,6 +13,8 @@ import Rainbow
 struct Tweet: Outputable {
     let id: Int
     let text: String
+    let isFavorited: Bool
+    let isRetweeted: Bool
     let user: User
     
     init(_ object: Any) throws {
@@ -24,10 +26,15 @@ struct Tweet: Outputable {
         }
         self.id = id
         self.text = text
+        self.isFavorited = dictionary["favorited"] as? Bool ?? false
+        self.isRetweeted = dictionary["retweeted"] as? Bool ?? false
         self.user = try User(userDictionary)
     }
     
     func output() -> String {
-        return "@\(self.user.screenName)（\(self.user.name)）".bold.underline + "\n\(self.text)\n" + "id:\(self.id)".lightMagenta
+        let header = "@\(self.user.screenName)（\(self.user.name)）".bold.underline
+        let body = "\(self.text)"
+        let footer = "id:\(self.id)\(self.isRetweeted ? " 🔄" : "")\(self.isFavorited ? " ❤️" : "")".lightMagenta
+        return  header + "\n" + body + "\n" + footer
     }
 }
