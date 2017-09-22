@@ -16,6 +16,7 @@ struct User: Outputable {
     let name: String
     let description: String
     let url: String
+    let isFollowing: Bool
     
     init(_ object: Any) throws {
         guard let dictionary = object as? [String: Any],
@@ -28,6 +29,7 @@ struct User: Outputable {
         self.name = dictionary["name"] as? String ?? ""
         self.description = dictionary["description"] as? String ?? ""
         self.url = dictionary["url"] as? String ?? ""
+        self.isFollowing = dictionary["following"] as? Bool ?? false
     }
     
     func output() -> String {
