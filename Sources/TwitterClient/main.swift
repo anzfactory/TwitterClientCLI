@@ -17,12 +17,16 @@ let main = Group {
         client.logout()
     }
     
-    $0.command("timeline",
-               Option("count", 30, description: "取得するツイート数"),
-               Option("since", 0, description: "以降のツイートID"), { (count, since) in
-        let client = Client()
-        client.timeline(count: count, sinceId: since)
-    })
+    $0.command(
+        "timeline",
+        Option("count", 30, description: "取得するツイート数"),
+        Option("since", 0, description: "以降のツイートID"),
+        Option("max", 0, description: "以前のツイートID"),
+        { (count, since, max) in
+            let client = Client()
+            client.timeline(count: count, sinceId: since, maxId: max)
+        }
+    )
     
     $0.command("retweet") { (tweetId: Int) in
         let client = Client()

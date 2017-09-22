@@ -15,6 +15,7 @@ struct TimelineType: TwitterAPIType {
     var oauth: TwitterOAuth
     var count: Int = 30
     var sinceId: Int?
+    var maxId: Int?
     
     var method: HTTPMethod {
         return .get
@@ -25,11 +26,14 @@ struct TimelineType: TwitterAPIType {
     }
     
     var parameters: Any? {
+        var params: [String: Any] = ["count": self.count]
         if let sinceId = self.sinceId, sinceId > 0 {
-            return ["count": self.count, "since_id": sinceId]
-        } else {
-            return ["count": self.count]
+            params["since_id"] = sinceId
         }
+        if let maxId = self.maxId, maxId > 0 {
+            params["max_id"] = maxId
+        }
+        return params
     }
     
     var queryParameters: [String : Any]? {

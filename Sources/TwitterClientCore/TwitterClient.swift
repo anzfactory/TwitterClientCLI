@@ -135,7 +135,7 @@ extension Client {
         dispatchMain()
     }
     
-    public func timeline(count: Int = 30, sinceId: Int = 0) {
+    public func timeline(count: Int = 30, sinceId: Int = 0, maxId: Int = 0) {
         var count = count
         if count <= 0 {
             print("invalid count...".red)
@@ -144,7 +144,7 @@ extension Client {
             count = 200
         }
         
-        let request = TimelineType(oauth: self.oauth, count: count, sinceId: sinceId)
+        let request = TimelineType(oauth: self.oauth, count: count, sinceId: sinceId, maxId: maxId)
         Session.send(request) { [weak self] result in
             switch result {
             case .success(let tweets):
