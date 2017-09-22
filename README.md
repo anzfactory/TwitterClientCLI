@@ -55,8 +55,8 @@ $ twcli favolist
 $ twcli favolist --count 10
 
 # ツイートをいいねする
-$twcli favo ツイートID
-$twcli unfavo ツイートID
+$ twcli favo ツイートID
+$ twcli unfavo ツイートID
 ```
 
 ### ユーザのフォロー
