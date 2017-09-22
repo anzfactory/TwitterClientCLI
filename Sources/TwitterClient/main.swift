@@ -53,18 +53,22 @@ let main = Group {
         client.unfavorite(tweetId)
     }
     
-    $0.command("search",
-               Option("q", "", description: "検索するキーワード"),
-               Option("u", "", description: "検索するユーザ名"),
-               Option("count", 30, description: "検索する取得件数"),
-               Option("since", 0, description: "以降のツイートID"), { (q, u, count, since) in
-        let client = Client()
-        if !q.isEmpty {
-            client.searchTweet(q, count: count, sinceId: since)
-        } else if !u.isEmpty {
-            client.searchUser(u, count: count)
+    $0.command(
+        "search",
+        Option("q", "", description: "検索するキーワード"),
+        Option("u", "", description: "検索するユーザ名"),
+        Option("count", 30, description: "検索する取得件数"),
+        Option("since", 0, description: "以降のツイートID"),
+        Option("max", 0, description: "以前のツイートID"),
+        { (q, u, count, since, max) in
+            let client = Client()
+            if !q.isEmpty {
+                client.searchTweet(q, count: count, sinceId: since, maxId: max)
+            } else if !u.isEmpty {
+                client.searchUser(u, count: count)
+            }
         }
-    })
+    )
     
     $0.command("follow",
                Option("id", 0, description: "フォローするユーザID"),
