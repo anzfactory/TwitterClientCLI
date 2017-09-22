@@ -32,7 +32,7 @@ extension Client {
                 self?.getAccessToken(pinCode: pinCode)
                 
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
                 exit(0)
             }
             
@@ -43,6 +43,7 @@ extension Client {
     public func logout() {
         UserDefaults.standard.removeObject(forKey: "oauthtoken")
         UserDefaults.standard.removeObject(forKey: "oauthtokensecret")
+        print("アクセストークンをクリアしました\nアプリ連携の解除は忘れずに行って下さい".blue)
     }
     
     public func tweet(_ message: String?) {
@@ -57,7 +58,7 @@ extension Client {
             case .success(let tweet):
                 print("done: \(tweet.id)".blue)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
@@ -71,7 +72,7 @@ extension Client {
             case .success(let tweet):
                 print("retweeted: \(tweet.id)".blue)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
@@ -85,7 +86,7 @@ extension Client {
             case .success(let tweet):
                 print("unretweeted: \(tweet.id)".blue)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
@@ -99,7 +100,7 @@ extension Client {
             case .success(let tweets):
                 self?.output(items: tweets.list)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
@@ -113,7 +114,7 @@ extension Client {
             case .success(let tweet):
                 print("favorited: \(tweet.id)".blue)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
@@ -127,7 +128,7 @@ extension Client {
             case .success(let tweet):
                 print("unfavorited: \(tweet.id)".blue)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
@@ -149,7 +150,7 @@ extension Client {
             case .success(let tweets):
                 self?.output(items: tweets.list)
             case.failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
@@ -171,7 +172,7 @@ extension Client {
             case .success(let tweets):
                 self?.output(items: tweets.list)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
@@ -193,7 +194,7 @@ extension Client {
             case .success(let users):
                 self?.output(items: users.list)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
@@ -207,7 +208,7 @@ extension Client {
             case .success(let user):
                 print("follow: @\(user.screenName)（\(user.id)）".blue)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
@@ -221,7 +222,7 @@ extension Client {
             case .success(let user):
                 print("unfollow: @\(user.screenName)（\(user.id)）".blue)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
@@ -240,7 +241,7 @@ extension Client {
                 self?.oauth.update(by: accessToken)
                 print("Hello \(accessToken.userName)".blue)
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription.red)
             }
             exit(0)
         }
