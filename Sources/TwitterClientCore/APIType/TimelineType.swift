@@ -14,6 +14,7 @@ struct TimelineType: TwitterAPIType {
     
     var oauth: TwitterOAuth
     var count: Int = 30
+    var sinceId: Int?
     
     var method: HTTPMethod {
         return .get
@@ -24,7 +25,11 @@ struct TimelineType: TwitterAPIType {
     }
     
     var parameters: Any? {
-        return ["count": self.count]
+        if let sinceId = self.sinceId, sinceId > 0 {
+            return ["count": self.count, "since_id": sinceId]
+        } else {
+            return ["count": self.count]
+        }
     }
     
     var queryParameters: [String : Any]? {
