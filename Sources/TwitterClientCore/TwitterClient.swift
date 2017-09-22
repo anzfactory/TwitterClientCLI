@@ -157,7 +157,7 @@ extension Client {
         dispatchMain()
     }
     
-    public func searchTweet(_ q: String, count: Int = 30) {
+    public func searchTweet(_ q: String, count: Int = 30, sinceId: Int) {
         var count = count
         if count <= 0 {
             print("invalid count...".red)
@@ -166,7 +166,7 @@ extension Client {
             count = 200
         }
         
-        let request = SearchTweetType(oauth: self.oauth, q: q, count: count)
+        let request = SearchTweetType(oauth: self.oauth, q: q, count: count, sinceId: sinceId)
         Session.send(request) { [weak self] result in
             switch result {
             case .success(let tweets):

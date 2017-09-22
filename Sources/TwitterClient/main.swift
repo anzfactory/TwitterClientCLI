@@ -52,10 +52,11 @@ let main = Group {
     $0.command("search",
                Option("q", "", description: "検索するキーワード"),
                Option("u", "", description: "検索するユーザ名"),
-               Option("count", 30, description: "検索する取得件数"), { (q, u, count) in
+               Option("count", 30, description: "検索する取得件数"),
+               Option("since", 0, description: "以降のツイートID"), { (q, u, count, since) in
         let client = Client()
         if !q.isEmpty {
-            client.searchTweet(q, count: count)
+            client.searchTweet(q, count: count, sinceId: since)
         } else if !u.isEmpty {
             client.searchUser(u, count: count)
         }

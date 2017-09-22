@@ -14,6 +14,7 @@ struct SearchTweetType: TwitterAPIType {
     var oauth: TwitterOAuth
     var q: String
     var count: Int = 30
+    var sinceId: Int?
     
     var method: HTTPMethod {
         return .get
@@ -24,7 +25,11 @@ struct SearchTweetType: TwitterAPIType {
     }
     
     var parameters: Any? {
-        return ["q": self.q, "count": self.count]
+        if let sinceId = self.sinceId, sinceId > 0 {
+            return ["q": self.q, "count": self.count, "since_id": sinceId]
+        } else {
+            return ["q": self.q, "count": self.count]
+        }
     }   
     
     var queryParameters: [String : Any]? {
