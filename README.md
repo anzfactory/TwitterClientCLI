@@ -82,12 +82,22 @@ $ twcli search 検索ワード --count 10
 ```
 
 ユーザ検索
+
 ```
 $ twcli search 検索ワード --fromUser
 $ twcli search 検索ワード --count 10 --fromUser
 ```
 
+### 特殊
+
+**Love**
+
+リツイートといいねをするコマンド
+
+```
+$ twcli love ツイートID
+```
+
 ## TODO
 
 * メディアのアップロード  
-* いいねもRTも同時にしちゃうのほしい -> loveコマンドでもつくろうかな
