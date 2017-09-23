@@ -64,6 +64,11 @@ let main = Group {
         client.unfavorite(tweetId)
     })
     
+    $0.command("love", Argument<Int>("tweetId", description: "リツイート＆いいねをするツイートID"), { tweetId in
+        let client = Client()
+        client.love(tweetId)
+    })
+    
     $0.command(
         "search",
         Argument<String>("keyword", description: "検索ワード"),

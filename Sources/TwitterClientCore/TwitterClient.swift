@@ -135,6 +135,29 @@ extension Client {
         dispatchMain()
     }
     
+    public func love(_ tweetId: Int) {
+        let request = FavoriteType(oauth: self.oauth, tweetId: tweetId)
+        Session.send(request) {
+            switch $0 {
+            case .success(_):
+                let retweetRequest = RetweetType(oauth: self.oauth, tweetId: tweetId)
+                Session.send(retweetRequest) {
+                    switch $0 {
+                    case .success(let tweet):
+                        print("retweeted & favorited: \(tweet.id)".blue)
+                    case .failure(let error):
+                        print(error.localizedDescription.red)
+                    }
+                    exit(0)
+                }
+            case .failure(let error):
+                print(error.localizedDescription.red)
+                exit(0)
+            }
+        }
+        dispatchMain()
+    }
+    
     public func timeline(count: Int = 30, sinceId: Int = 0, maxId: Int = 0) {
         var count = count
         if count <= 0 {
