@@ -77,14 +77,14 @@ $ twcli timeline --count 10
 ### 検索
 
 ```
-$ twcli search --q 検索ワード
-$ twcli search --q 検索ワード --count 10
+$ twcli search 検索ワード
+$ twcli search 検索ワード --count 10
 ```
 
 ユーザ検索
 ```
-$ twcli search --u 検索ワード
-$ twcli search --u 検索ワード --count 10
+$ twcli search 検索ワード --fromUser
+$ twcli search 検索ワード --count 10 --fromUser
 ```
 
 ## TODO
