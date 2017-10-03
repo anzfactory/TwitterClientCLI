@@ -52,7 +52,7 @@ extension Client {
             return
         }
         
-        let t = {(msg: String, replayId: Int, mediaId: Int) in
+        let t = {(msg: String, replyId: Int, mediaId: Int) in
             let request = TweetType(oauth: self.oauth, message: msg, replyId: replyId, mediaId: mediaId)
             Session.send(request) {
                 switch $0 {
