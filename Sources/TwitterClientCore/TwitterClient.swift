@@ -46,22 +46,40 @@ extension Client {
         print("アクセストークンをクリアしました\nアプリ連携の解除は忘れずに行って下さい".blue)
     }
     
-    public func tweet(_ message: String, replyId: Int) {
+    public func tweet(_ message: String, replyId: Int, path: String) {
         if message.isEmpty {
             print("message is empty...".red)
             return
         }
         
-        let request = TweetType(oauth: self.oauth, message: message, replyId: replyId)
-        Session.send(request) {
-            switch $0 {
-            case .success(let tweet):
-                print("done: \(tweet.id)".blue)
-            case .failure(let error):
-                print(error.localizedDescription.red)
+        let t = {(msg: String, replayId: Int, mediaId: Int) in
+            let request = TweetType(oauth: self.oauth, message: msg, replyId: replyId, mediaId: mediaId)
+            Session.send(request) {
+                switch $0 {
+                case .success(let tweet):
+                    print("done: \(tweet.id)".blue)
+                case .failure(let error):
+                    print(error.localizedDescription.red)
+                }
+                exit(0)
             }
-            exit(0)
         }
+        
+        if path.isEmpty {
+            t(message, replyId, 0)
+        } else {
+            let request = MediaUploadType(oauth: self.oauth, url: URL(fileURLWithPath: path))
+            Session.send(request) {
+                switch $0 {
+                case .success(let media):
+                    t(message, replyId, media.id)
+                case .failure(let error):
+                    print(error)
+                    exit(0)
+                }
+            }
+        }
+        
         dispatchMain()
     }
     

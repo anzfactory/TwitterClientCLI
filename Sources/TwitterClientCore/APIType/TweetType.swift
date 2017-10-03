@@ -15,6 +15,7 @@ struct TweetType: TwitterAPIType {
     var oauth: TwitterOAuth
     var message: String
     var replyId: Int?
+    var mediaId: Int?
     
     var method: HTTPMethod {
         return .post
@@ -28,6 +29,9 @@ struct TweetType: TwitterAPIType {
         var params: [String: Any] = ["status": self.message]
         if let replyId = self.replyId, replyId > 0 {
             params["in_reply_to_status_id"] = replyId
+        }
+        if let mediaId = self.mediaId, mediaId > 0 {
+            params["media_ids"] = "\(mediaId)"
         }
         return params
     }
