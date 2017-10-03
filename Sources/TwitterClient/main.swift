@@ -11,9 +11,10 @@ let main = Group {
         "tweet",
         Argument<String>("message", description: "ツイート文"),
         Option("reply", 0, description: "返信するツイートID"),
-        { (message, reply) in
+        Option("path", "", description: "アップロードする画像パス"),
+        { (message, reply, path) in
             let client = Client()
-            client.tweet(message, replyId: reply)
+            client.tweet(message, replyId: reply, path: path)
         }
     )
     
