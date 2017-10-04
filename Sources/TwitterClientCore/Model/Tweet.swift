@@ -34,7 +34,10 @@ struct Tweet: Outputable {
     func output() -> String {
         let header = "@\(self.user.screenName)（\(self.user.name)）".bold.underline + (self.user.isFollowing ? " ★".yellow : "")
         let body = "\(self.text)"
-        let footer = "id:\(self.id)".lightMagenta + (self.isRetweeted ? " RT".green : "") + (self.isFavorited ? " ♥".cyan : "")
+        var footer = "id: \(self.id)".lightMagenta + (self.isRetweeted ? " RT".green : "") + (self.isFavorited ? " ♥".cyan : "")
+        if let tweetUrl = URL(tweet: self) {
+            footer += "\n\(tweetUrl.absoluteString)".lightMagenta
+        }
         return  header + "\n" + body + "\n" + footer
     }
 }
