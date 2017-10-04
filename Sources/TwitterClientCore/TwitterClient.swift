@@ -297,6 +297,20 @@ extension Client {
         }
         dispatchMain()
     }
+    
+    public func me() {
+        let request = AccountSettingsType(oauth: self.oauth)
+        Session.send(request) { [weak self] result in
+            switch result {
+            case .success(let settings):
+                self?.output(items: [settings])
+            case .failure(let error):
+                print(error.localizedDescription.red)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
 }
 
 extension Client {
