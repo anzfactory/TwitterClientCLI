@@ -38,7 +38,7 @@ struct TweetType: TwitterAPIType {
     
     var bodyParameters: BodyParameters? {
         if let params = self.parameters as? [String: Any] {
-            return FormURLEncodedBodyParameters(formObject: params, encoding: .utf8)
+            return CustomFormURLEncodedBodyParameters(formObject: params, encoding: .utf8)
         } else {
             return nil
         }
@@ -46,5 +46,32 @@ struct TweetType: TwitterAPIType {
     
     func response(from object: Any, urlResponse: HTTPURLResponse) throws -> Tweet {
         return try Tweet(object)
+    }
+}
+
+
+public struct CustomFormURLEncodedBodyParameters: BodyParameters {
+    public let form: [String: Any]
+    
+    public let encoding: String.Encoding
+    
+    public init(formObject: [String: Any], encoding: String.Encoding = .utf8) {
+        self.form = formObject
+        self.encoding = encoding
+    }
+    
+    // MARK: - BodyParameters
+    
+    public var contentType: String {
+        return "application/x-www-form-urlencoded"
+    }
+    
+    public func buildEntity() throws -> RequestBodyEntity {
+        // APIKitが内部で行っているエンコードとこっちでシグネチャ周りで行っているエンコードが違っているからかなのか
+        // まるっと任せると スラッシュとかがツイート文に入っているとエラーになってしまうので、
+        // 同じエンコードメソッドを使ってDataを作るようにしている...
+        // 詳細をきっちりは追っていないけどこれでできるのでいいっしょ...。うん。😇
+        let string = self.form.encodeRFC3986().joinKeyValue(unionString: "=").joined(separator: "&")
+        return .data(string.data(using: .utf8, allowLossyConversion: true)!)
     }
 }
