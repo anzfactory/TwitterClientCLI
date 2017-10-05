@@ -100,6 +100,11 @@ let main = Group {
                 let client = Client()
                 client.unfollow(userId: id, screenName: name)
     })
+    
+    $0.command("me") {
+        let client = Client()
+        client.me()
+    }
 
 }
 

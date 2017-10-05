@@ -52,12 +52,13 @@ extension Client {
             return
         }
         
-        let t = {(msg: String, replayId: Int, mediaId: Int) in
+        let t = {(msg: String, replyId: Int, mediaId: Int) in
             let request = TweetType(oauth: self.oauth, message: msg, replyId: replyId, mediaId: mediaId)
-            Session.send(request) {
-                switch $0 {
+            Session.send(request) { [weak self] result in
+                switch result {
                 case .success(let tweet):
-                    print("done: \(tweet.id)".blue)
+                    print("-- done --".blue)
+                    self?.output(items: [tweet])
                 case .failure(let error):
                     print(error.localizedDescription.red)
                 }
@@ -85,10 +86,11 @@ extension Client {
     
     public func retweet(_ tweetId: Int) {
         let request = RetweetType(oauth: self.oauth, tweetId: tweetId)
-        Session.send(request) {
-            switch $0 {
+        Session.send(request) { [weak self] result in
+            switch result {
             case .success(let tweet):
-                print("retweeted: \(tweet.id)".blue)
+                print("-- retweeted --".blue)
+                self?.output(items: [tweet])
             case .failure(let error):
                 print(error.localizedDescription.red)
             }
@@ -99,10 +101,11 @@ extension Client {
     
     public func unretweet(_ tweetId: Int) {
         let request = UnRetweetType(oauth: self.oauth, tweetId: tweetId)
-        Session.send(request) {
-            switch $0 {
+        Session.send(request) { [weak self] result in
+            switch result {
             case .success(let tweet):
-                print("unretweeted: \(tweet.id)".blue)
+                print("-- unretweeted --".blue)
+                self?.output(items: [tweet])
             case .failure(let error):
                 print(error.localizedDescription.red)
             }
@@ -127,10 +130,11 @@ extension Client {
     
     public func favorite(_ tweetId: Int) {
         let request = FavoriteType(oauth: self.oauth, tweetId: tweetId)
-        Session.send(request) {
-            switch $0 {
+        Session.send(request) { [weak self] result in
+            switch result {
             case .success(let tweet):
-                print("favorited: \(tweet.id)".blue)
+                print("-- favorited --".blue)
+                self?.output(items: [tweet])
             case .failure(let error):
                 print(error.localizedDescription.red)
             }
@@ -141,10 +145,11 @@ extension Client {
     
     public func unfavorite(_ tweetId: Int) {
         let request = UnFavoriteType(oauth: self.oauth, tweetId: tweetId)
-        Session.send(request) {
-            switch $0 {
+        Session.send(request) { [weak self] result in
+            switch result {
             case .success(let tweet):
-                print("unfavorited: \(tweet.id)".blue)
+                print("-- unfavorited --".blue)
+                self?.output(items: [tweet])
             case .failure(let error):
                 print(error.localizedDescription.red)
             }
@@ -159,10 +164,11 @@ extension Client {
             switch $0 {
             case .success(_):
                 let retweetRequest = RetweetType(oauth: self.oauth, tweetId: tweetId)
-                Session.send(retweetRequest) {
-                    switch $0 {
+                Session.send(retweetRequest) { [weak self] result in
+                    switch result {
                     case .success(let tweet):
-                        print("retweeted & favorited: \(tweet.id)".blue)
+                        print("-- retweeted & favorited --".blue)
+                        self?.output(items: [tweet])
                     case .failure(let error):
                         print(error.localizedDescription.red)
                     }
@@ -284,6 +290,20 @@ extension Client {
             switch $0 {
             case .success(let user):
                 print("unfollow: @\(user.screenName)（\(user.id)）".blue)
+            case .failure(let error):
+                print(error.localizedDescription.red)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
+    
+    public func me() {
+        let request = AccountSettingsType(oauth: self.oauth)
+        Session.send(request) { [weak self] result in
+            switch result {
+            case .success(let settings):
+                self?.output(items: [settings])
             case .failure(let error):
                 print(error.localizedDescription.red)
             }
