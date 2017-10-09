@@ -303,6 +303,20 @@ extension Client {
         }
         dispatchMain()
     }
+    
+    public func rateLimit() {
+        let request = RateLimitType(oauth: self.oauth)
+        Session.send(request) { [weak self] result in
+            switch result {
+            case .success(let rateLimit):
+                self?.output(items: [rateLimit])
+            case .failure(let error):
+                print(error.localizedDescription.red)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
 }
 
 extension Client {
