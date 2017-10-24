@@ -105,6 +105,11 @@ let main = Group {
         let client = Client()
         client.me()
     }
+    
+    $0.command("rate-limit") {
+        let client = Client()
+        client.rateLimit()
+    }
 
 }
 

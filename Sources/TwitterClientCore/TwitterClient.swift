@@ -47,38 +47,30 @@ extension Client {
     }
     
     public func tweet(_ message: String, replyId: Int, path: String) {
-        if message.isEmpty {
-            print("message is empty...".red)
+        if message.isEmpty && path.isEmpty {
+            print("message and path is empty...".red)
             return
         }
         
-        let t = {(msg: String, replyId: Int, mediaId: Int) in
-            let request = TweetType(oauth: self.oauth, message: msg, replyId: replyId, mediaId: mediaId)
-            Session.send(request) { [weak self] result in
-                switch result {
-                case .success(let tweet):
-                    print("-- done --".blue)
-                    self?.output(items: [tweet])
-                case .failure(let error):
-                    print(error.localizedDescription.red)
-                }
-                exit(0)
+        self.getTweet(tweetId: replyId) { tweet in
+            var msg = message
+            if let tweet = tweet {
+                msg = "@\(tweet.user.screenName) \(message)"
             }
-        }
-        
-        if path.isEmpty {
-            t(message, replyId, 0)
-        } else {
-            let request = MediaUploadType(oauth: self.oauth, url: URL(fileURLWithPath: path))
-            Session.send(request) {
-                switch $0 {
-                case .success(let media):
-                    t(message, replyId, media.id)
-                case .failure(let error):
-                    print(error)
+            
+            self.uploadMedia(path: path, callback: { mediaId in
+                let request = TweetType(oauth: self.oauth, message: msg, replyId: replyId, mediaId: mediaId)
+                Session.send(request) { [weak self] result in
+                    switch result {
+                    case .success(let tweet):
+                        print("-- done --".blue)
+                        self?.output(items: [tweet])
+                    case .failure(let error):
+                        print(error.localizedDescription.red)
+                    }
                     exit(0)
                 }
-            }
+            })
         }
         
         dispatchMain()
@@ -311,6 +303,20 @@ extension Client {
         }
         dispatchMain()
     }
+    
+    public func rateLimit() {
+        let request = RateLimitType(oauth: self.oauth)
+        Session.send(request) { [weak self] result in
+            switch result {
+            case .success(let rateLimit):
+                self?.output(items: [rateLimit])
+            case .failure(let error):
+                print(error.localizedDescription.red)
+            }
+            exit(0)
+        }
+        dispatchMain()
+    }
 }
 
 extension Client {
@@ -327,6 +333,43 @@ extension Client {
                 print(error.localizedDescription.red)
             }
             exit(0)
+        }
+    }
+    
+    fileprivate func uploadMedia(path: String, callback: @escaping (Int?) -> Void) {
+        
+        if path.isEmpty {
+            callback(nil)
+            return
+        }
+        
+        let request = MediaUploadType(oauth: self.oauth, url: URL(fileURLWithPath: path))
+        Session.send(request) {
+            switch $0 {
+            case .success(let media):
+                callback(media.id)
+            case .failure(_):
+                callback(nil)
+            }
+        }
+    }
+    
+    fileprivate func getTweet(tweetId: Int, callback: @escaping (Tweet?) -> Void) {
+        
+        if 0 >= tweetId {
+            callback(nil)
+            return
+        }
+        
+        let request = ShowTweetType(oauth: self.oauth, tweetId: tweetId)
+        Session.send(request) {
+            switch $0 {
+            case .success(let tweet):
+                callback(tweet)
+            case .failure(let error):
+                print(error)
+                callback(nil)
+            }
         }
     }
     
