@@ -8,11 +8,12 @@
 import Foundation
 
 extension URL {
-    static func `init`(tweet: Tweet) -> URL? {
+    
+    init(tweet: Tweet) {
         var components = URLComponents()
         components.scheme = "https"
         components.host = "twitter.com"
         components.path = "/\(tweet.user.screenName)/status/\(tweet.id)"
-        return components.url
+        self = components.url!
     }
 }
