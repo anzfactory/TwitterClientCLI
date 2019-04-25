@@ -8,6 +8,6 @@
 import Foundation
 
 struct Keys {
-    static let consumerKey: String = "vSjgJVGZXHx48dxZ5u6hu6ZkA"
-    static let consumerSecret: String = "Izzpb4U0Cjvre2CzRrHmBfEHg243JRw5LmuflE82OqWrBffoF9"
+    static let consumerKey: String = "Your Consuemr Key"
+    static let consumerSecret: String = "Yout Consumer Secret"
 }
