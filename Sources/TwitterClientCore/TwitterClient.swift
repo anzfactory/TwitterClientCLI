@@ -25,7 +25,7 @@ extension Client {
             switch result {
             case .success(let requestToken):
                 self?.oauth.update(by: requestToken)
-                NSWorkspace.shared().open(URL(string: TwitterOAuth.URLs.authorize(oauthToken: requestToken.oauthToken).string)!)
+                NSWorkspace.shared.open(URL(string: TwitterOAuth.URLs.authorize(oauthToken: requestToken.oauthToken).string)!)
                 
                 let pinCode = ask("Enter PIN")
                 
